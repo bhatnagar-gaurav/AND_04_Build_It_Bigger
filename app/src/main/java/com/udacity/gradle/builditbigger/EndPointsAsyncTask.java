@@ -13,7 +13,7 @@ import com.udacity.gradle.builditbigger.utils.AppConstants;
 import java.io.IOException;
 
 class EndPointsAsyncTask extends AsyncTask<Void, Void, String> {
-    private static MyApi myApiService = null;
+    private static MyApi sMyApiService = null;
     private ExecutionListener listener;
 
     EndPointsAsyncTask(ExecutionListener listener) {
@@ -33,7 +33,7 @@ class EndPointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-        if(myApiService == null) {
+        if(sMyApiService == null) {
             MyApi.Builder builder = new MyApi.Builder(
                     AndroidHttp.newCompatibleTransport()
                     , new AndroidJsonFactory(), null
@@ -46,13 +46,13 @@ class EndPointsAsyncTask extends AsyncTask<Void, Void, String> {
                                 }
                             }
                     );
-            myApiService = builder.build();
+            sMyApiService = builder.build();
         }
         try {
-            return myApiService.retrieveJokeFromRobustBackend().execute().getData();
+            return sMyApiService.retrieveJokeFromRobustBackend().execute().getData();
         } catch (IOException e) {
             Log.d("myTag", e.getMessage());
-            return "";
+            return null;
         }
     }
 

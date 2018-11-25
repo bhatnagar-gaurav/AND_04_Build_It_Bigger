@@ -5,31 +5,35 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.udacity.android.joke.library.JokeDisplayActivity;
+
+import static com.udacity.gradle.builditbigger.utils.AppConstants.BUNDLE_EXTRA_JOKE;
+import static com.udacity.gradle.builditbigger.utils.AppConstants.KEY_JOKE_ARGUMENT;
 
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements EndPointsAsyncTask.ExecutionListener{
+public class MainActivityFragment extends Fragment implements EndPointsAsyncTask.ExecutionListener {
 
-    private ProgressBar jokeProgress;
+    private ProgressBar mJokeProgress;
 
     public MainActivityFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
 
-        return root;
     }
 
 
@@ -37,7 +41,7 @@ public class MainActivityFragment extends Fragment implements EndPointsAsyncTask
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        jokeProgress = view.findViewById(R.id.jokeProgressbar);
+        mJokeProgress = view.findViewById(R.id.jokeProgressbar);
 
         Button showJoke = view.findViewById(R.id.showJokeButton);
         showJoke.setOnClickListener(new View.OnClickListener() {
@@ -51,17 +55,23 @@ public class MainActivityFragment extends Fragment implements EndPointsAsyncTask
 
     @Override
     public void changeProgressBarViewStatus(boolean var) {
-        if(var){
-            jokeProgress.setVisibility(View.VISIBLE);
+        if (var) {
+            mJokeProgress.setVisibility(View.VISIBLE);
         } else {
-            jokeProgress.setVisibility(View.GONE);
+            mJokeProgress.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void startDisplayActivity(String result) {
-        Intent jokeIntent = new Intent(getActivity(),JokeDisplayActivity.class);
-        jokeIntent.putExtra(getString(R.string.key_joke_argument), result);
+        if (TextUtils.isEmpty(result)) {
+            Toast.makeText(getContext(), R.string.error_string, Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent jokeIntent = new Intent(getActivity(), JokeDisplayActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_JOKE_ARGUMENT,result);
+        jokeIntent.putExtra(BUNDLE_EXTRA_JOKE, bundle);
         startActivity(jokeIntent);
     }
 }

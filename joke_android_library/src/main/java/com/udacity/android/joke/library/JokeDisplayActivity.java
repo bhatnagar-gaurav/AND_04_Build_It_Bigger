@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import static utils.AppConstants.BUNDLE_EXTRA_JOKE;
+import static utils.AppConstants.KEY_JOKE_ARGUMENT;
+
 
 public class JokeDisplayActivity extends AppCompatActivity {
 
@@ -20,10 +23,10 @@ public class JokeDisplayActivity extends AppCompatActivity {
 
     private void showJokeFromIntent() {
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(getString(R.string.key_joke_argument))) {
-            Bundle data = intent.getExtras();
+        if (intent != null && intent.hasExtra(BUNDLE_EXTRA_JOKE)) {
+            Bundle data = intent.getBundleExtra(BUNDLE_EXTRA_JOKE);
             if (data != null) {
-                String joke = data.getString(getString(R.string.key_joke_argument));
+                String joke = data.getString(KEY_JOKE_ARGUMENT);
                 tVJoke.setText(joke);
             }
         }

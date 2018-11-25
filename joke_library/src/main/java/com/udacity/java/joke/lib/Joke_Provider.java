@@ -4,7 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Joke_Provider {
+public final class Joke_Provider {
+
+    private static final Random mRandomGenerator = new Random();
+
+
     private List<String> jokeList = Arrays.asList(
             "Q. What’s the difference between ignorance and apathy? A. I don’t know and I don’t care.",
             "Did you hear about the semi-colon that broke the law? He was given two consecutive sentences.",
@@ -17,8 +21,7 @@ public class Joke_Provider {
             "What do you call a cow with no legs?\nGround beef!");
 
     public String getRandomJoke() {
-        Random randomGenerator = new Random();
-        int i = randomGenerator.nextInt(jokeList.size());
+        int i = mRandomGenerator.nextInt(jokeList.size());
         return jokeList.get(i);
     }
 
