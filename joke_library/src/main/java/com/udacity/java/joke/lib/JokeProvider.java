@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public final class Joke_Provider {
+public final class JokeProvider {
 
     private static final Random mRandomGenerator = new Random();
 
